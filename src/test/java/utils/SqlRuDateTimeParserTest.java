@@ -49,8 +49,7 @@ public class SqlRuDateTimeParserTest {
         SqlRuDateTimeParser parser = new SqlRuDateTimeParser();
        try {
            parser.parse("завтра, 25:64");
-       }
-       catch (IllegalArgumentException e) {
+       } catch (IllegalArgumentException e) {
            thrown = true;
        }
         assertTrue(thrown);

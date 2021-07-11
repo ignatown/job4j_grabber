@@ -7,7 +7,8 @@ import org.jsoup.select.Elements;
 
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
-        Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
+        for (int j = 1; j <= 5; j++) {
+        Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + j).get();
         Elements row = doc.select(".postslisttopic");
         Elements alt = doc.getElementsByClass("altCol");
         int i = 1;
@@ -19,5 +20,6 @@ public class SqlRuParse {
             System.out.println(pot.text());
             i = i + 2;
         }
+    }
     }
 }
