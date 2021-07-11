@@ -1,3 +1,5 @@
+package html;
+
 import java.time.LocalDateTime;
 
 public class Post {
@@ -6,6 +8,9 @@ public class Post {
     private String link;
     private String description;
     private LocalDateTime created;
+
+    public Post() {
+    }
 
     public Post(int id, String title, String link, String description, LocalDateTime created) {
         this.id = id;
@@ -57,7 +62,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{"
+        return "html.Post{"
                 + "id=" + id
                 + ", title='" + title + '\'' + ", link='" + link + '\''
                 + ", description='" + description + '\'' + ", created=" + created + '}';
