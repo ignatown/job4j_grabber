@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import utils.DateTimeParser;
 import utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
@@ -12,10 +13,14 @@ import java.util.List;
 
 public class SqlRuParse implements Parse {
 
-    private final SqlRuDateTimeParser sqlRuDateTimeParser;
+    private final DateTimeParser dateTimeParser;
+
+    public SqlRuParse(DateTimeParser dateTimeParser) {
+        this.dateTimeParser = dateTimeParser;
+    }
 
     public SqlRuParse(SqlRuDateTimeParser sqlRuDateTimeParser) {
-        this.sqlRuDateTimeParser = sqlRuDateTimeParser;
+        this.dateTimeParser = sqlRuDateTimeParser;
     }
 
     public static void main(String[] args) {
@@ -33,7 +38,7 @@ public class SqlRuParse implements Parse {
             Element href = td.child(0);
             String parseLink = href.attr("href");
             posts.add(new Post(href.text(), detail(parseLink).getDescription(),
-                    parseLink, sqlRuDateTimeParser.parse(alt.get(i).text())));
+                    parseLink, dateTimeParser.parse(alt.get(i).text())));
             i = i + 2;
         }
     }
@@ -45,6 +50,6 @@ public class SqlRuParse implements Parse {
         Document doc = Jsoup.connect(link).get();
         Elements row = doc.select(".msgBody");
         Elements row1 = doc.select(".msgFooter");
-        return new Post(row.get(1).text(), sqlRuDateTimeParser.parse(row1.get(0).text().split("\\[")[0]));
+        return new Post(row.get(1).text(), dateTimeParser.parse(row1.get(0).text().split("\\[")[0]));
     }
 }
