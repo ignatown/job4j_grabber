@@ -2,6 +2,7 @@ package html;
 
 import utils.SqlRuDateTimeParser;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -14,7 +15,9 @@ public class PsqlStore implements Store, AutoCloseable {
     private final Connection cnn;
 
     public static void main(String[] args) throws IOException, SQLException {
-        PsqlStore psqlStore = new PsqlStore(new Properties());
+        Properties in = new Properties();
+        in.load(new FileInputStream("C:\\projects\\job4j_grabber\\src\\main\\resources\\app.properties"));
+        PsqlStore psqlStore = new PsqlStore(in);
         SqlRuDateTimeParser sqlRuDateTimeParser = new SqlRuDateTimeParser();
         ConnectionRollback.create(psqlStore.cnn);
         SqlRuParse sqlRuParse = new SqlRuParse(sqlRuDateTimeParser);
@@ -25,7 +28,6 @@ public class PsqlStore implements Store, AutoCloseable {
 
     public PsqlStore(Properties cfg) {
         try {
-            cfg.load(PsqlStore.class.getClassLoader().getResourceAsStream("app.properties"));
             Class.forName(cfg.getProperty("jdbc.driver"));
             this.cnn = DriverManager.getConnection(cfg.getProperty("jdbc.url"), cfg.getProperty("jdbc.userName"), cfg.getProperty("jdbc.userPassword"));
         } catch (Exception e) {
@@ -35,7 +37,7 @@ public class PsqlStore implements Store, AutoCloseable {
 
     @Override
     public void save(Post post)  {
-        try (PreparedStatement pr = this.cnn.prepareStatement("insert into post(name, text, link, created) values(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pr = this.cnn.prepareStatement("insert into post(name, text, link, created) values(?, ?, ?, ?)  on conflict do nothing", Statement.RETURN_GENERATED_KEYS)) {
             pr.setString(1, post.getTitle());
             pr.setString(2, post.getDescription());
             pr.setString(3, post.getLink());
@@ -72,7 +74,7 @@ public class PsqlStore implements Store, AutoCloseable {
 
     @Override
     public Post findById(int id) {
-        Post post = new Post();
+        Post post = null;
         try (PreparedStatement pr = cnn.prepareStatement("select * from post where id = ?")) {
             pr.setInt(1, id);
             ResultSet resultSet = pr.executeQuery();

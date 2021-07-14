@@ -12,7 +12,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(int id, String title, String link, String description, LocalDateTime created) {
+    public Post(int id, String title, String description, String link, LocalDateTime created) {
         this.id = id;
         this.title = title;
         this.link = link;
