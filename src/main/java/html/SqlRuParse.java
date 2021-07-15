@@ -27,9 +27,9 @@ public class SqlRuParse implements Parse {
     }
 
     @Override
-    public List<Post> list(String link) throws IOException {
+    public List<Post> list(String link)  {
        List<Post> posts = new ArrayList<>();
-       for (int j = 1; j <= 5; j++) {
+      try { for (int j = 1; j <= 5; j++) {
         Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + j).get();
         Elements row = doc.select(".postslisttopic");
         Elements alt = doc.getElementsByClass("altCol");
@@ -41,7 +41,10 @@ public class SqlRuParse implements Parse {
                     parseLink, dateTimeParser.parse(alt.get(i).text())));
             i = i + 2;
         }
-    }
+      }
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
         return posts;
     }
 
