@@ -76,7 +76,7 @@ public class Post {
     public String toString() {
         return "html.Post{"
                 + "id=" + id
-                + ", title='" + title + '\'' + ", link='" + link + '\''
-                + ", description='" + description + '\'' + ", created=" + created + '}';
+                + ";\n title='" + title + ";\n link=" + link +
+                 ";\n description='" + description + ";\n created=" + created + '}' + System.lineSeparator();
     }
 }
