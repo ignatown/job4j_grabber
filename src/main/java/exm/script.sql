@@ -31,4 +31,4 @@ insert into person (id, name, company_id) values (8, 'p8', 5);
 -- 1)
 select person.name as p_name, company.name as c_name from company right join person on company.id = person.company_id where person.company_id != 5 OR person.company_id IS NULL;
 -- 2)
-select company.name, count(*) from company join person on company.id = person.company_id group by company.name order by 2 desc limit 1;
+select company.name, count(*) from company join person on company.id = person.company_id group by company.name order by count(*) desc limit 1;
